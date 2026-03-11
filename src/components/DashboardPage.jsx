@@ -1,0 +1,211 @@
+import React, { useState, useMemo } from 'react';
+import { LOGS } from '../data/logs';
+import { useAuth } from '../context/AuthContext';
+import LogEntry from './LogEntry';
+
+const DashboardPage = () => {
+  const { logout } = useAuth();
+  
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterClass, setFilterClass] = useState('ALL');
+  const [filterType, setFilterType] = useState('ALL');
+  
+  // Progress simulation (just visual)
+  const operationProgress = 87;
+
+  // Filter and sort logic
+  const filteredLogs = useMemo(() => {
+    let result = [...LOGS];
+
+    // Sub-sort chronological roughly based on DR date strings.
+    // E.g '-339 DR', '1360 DR'. Strip ' DR' and parse.
+    result.sort((a, b) => {
+      const dateA = parseInt(a.date.replace(' DR', ''), 10);
+      const dateB = parseInt(b.date.replace(' DR', ''), 10);
+      return dateA - dateB;
+    });
+
+    if (filterClass !== 'ALL') {
+      result = result.filter(log => log.classification.includes(filterClass));
+    }
+    
+    if (filterType === 'KEY') {
+      result = result.filter(log => log.keyLog);
+    } else if (filterType === 'ROUTINE') {
+      result = result.filter(log => !log.keyLog);
+    }
+
+    if (searchTerm) {
+      const term = searchTerm.toLowerCase();
+      result = result.filter(log => 
+        log.title.toLowerCase().includes(term) || 
+        log.content.toLowerCase().includes(term) ||
+        log.operationCode.toLowerCase().includes(term)
+      );
+    }
+
+    return result;
+  }, [searchTerm, filterClass, filterType]);
+
+  // Aggregate stats
+  const stats = {
+    total: LOGS.length,
+    visible: filteredLogs.length,
+    redactedBytes: LOGS.reduce((acc, log) => acc + (log.redactedSections?.length || 0), 0) * 128
+  };
+
+  const classifications = ['ALL', ...new Set(LOGS.map(l => l.classification))];
+  // Group similar ones for a cleaner dropdown
+  const simplifiedFilters = ['ALL', 'DECLASSIFIED', 'ROUTINE', 'CONFIDENTIAL', 'RESTRICTED', 'TOP SECRET', 'EYES ONLY'];
+
+  return (
+    <div className="min-h-screen bg-black text-gray-300 p-2 md:p-6 font-mono selection:bg-red-900 selection:text-white">
+      <div className="grain-overlay"></div>
+      
+      <div className="max-w-6xl mx-auto flex flex-col h-full crt-flicker">
+        
+        {/* Command Header */}
+        <header className="border-2 border-gray-700 bg-gray-900 bg-opacity-50 p-4 mb-6 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-red-900 rounded-full blur-[100px] opacity-20 pointer-events-none"></div>
+          
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-gray-700 pb-4 mb-4">
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-[#d4af37] tracking-widest courier-prime mb-1">
+                BLACK THORNE INTELLIGENCE ARCHIVE
+              </h1>
+              <p className="text-xs text-gray-500 tracking-wider">
+                CURRENT SECURITY LEVEL: THETA-7 (TS/SCI) | OPERATOR: CALLIOPE
+              </p>
+            </div>
+            
+            <button 
+              onClick={logout}
+              className="text-xs font-bold border border-red-900 text-red-500 hover:bg-red-900 hover:text-white px-4 py-2 transition-colors uppercase tracking-widest"
+            >
+              TERMINATE SESSION
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+            <div>
+              <div className="flex justify-between text-xs mb-1 font-bold">
+                <span className="text-gray-400 tracking-widest">OPERATION STATUS: RESURRECTION PROTOCOL</span>
+                <span className="text-[#d4af37]">{operationProgress}%</span>
+              </div>
+              <div className="h-4 bg-gray-800 border border-gray-600 w-full overflow-hidden">
+                <div 
+                  className="h-full bg-gradient-to-r from-red-900 to-red-600 animate-pulse-glow" 
+                  style={{ width: `${operationProgress}%` }}
+                ></div>
+              </div>
+            </div>
+
+            <div className="flex gap-4 text-xs font-bold text-gray-500 border-l border-gray-700 pl-4">
+              <div>
+                <span className="block text-gray-400">TOTAL RECORDS</span>
+                <span>{stats.total}</span>
+              </div>
+              <div>
+                <span className="block text-gray-400">ENCRYPTED/REDACTED</span>
+                <span>{stats.redactedBytes} BYTES</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* Main Grid: Sidebar Controls + Log List */}
+        <div className="flex flex-col lg:flex-row gap-6 flex-1">
+          
+          {/* Controls Sidebar */}
+          <aside className="w-full lg:w-64 flex-shrink-0 space-y-6 no-print">
+            
+            {/* Search */}
+            <div className="border border-gray-700 p-4 bg-black">
+              <label className="block text-xs font-bold text-gray-400 mb-2 tracking-widest text-[#d4af37]">QUERY INTERFACE</label>
+              <input 
+                type="text" 
+                placeholder="Search..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full bg-gray-900 border border-gray-600 p-2 text-sm text-white focus:border-[#d4af37] focus:outline-none transition-colors"
+              />
+            </div>
+
+            {/* Filters */}
+            <div className="border border-gray-700 p-4 bg-black">
+              <label className="block text-xs font-bold text-gray-400 mb-4 tracking-widest text-[#d4af37]">FILTER PARAMETERS</label>
+              
+              <div className="mb-4">
+                <span className="block text-[10px] text-gray-500 mb-2 uppercase tracking-wider">Classification</span>
+                <select 
+                  value={filterClass}
+                  onChange={(e) => setFilterClass(e.target.value)}
+                  className="w-full bg-gray-900 border border-gray-600 p-2 text-sm text-gray-300 focus:border-[#d4af37] focus:outline-none cursor-pointer"
+                >
+                  {simplifiedFilters.map(sf => (
+                    <option key={sf} value={sf}>{sf}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <span className="block text-[10px] text-gray-500 mb-2 uppercase tracking-wider">Importance Level</span>
+                <div className="flex flex-col gap-2">
+                  <label className="flex items-center gap-2 cursor-pointer text-sm hover:text-white transition-colors">
+                    <input type="radio" name="filterType" value="ALL" checked={filterType === 'ALL'} onChange={() => setFilterType('ALL')} className="accent-[#d4af37]" />
+                    <span>All Records</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer text-sm hover:text-white transition-colors">
+                    <input type="radio" name="filterType" value="KEY" checked={filterType === 'KEY'} onChange={() => setFilterType('KEY')} className="accent-[#d4af37]" />
+                    <span>Key Operations (★)</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer text-sm hover:text-white transition-colors">
+                    <input type="radio" name="filterType" value="ROUTINE" checked={filterType === 'ROUTINE'} onChange={() => setFilterType('ROUTINE')} className="accent-[#d4af37]" />
+                    <span>Routine/Maintenance</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-[10px] text-gray-600 border border-gray-800 p-3 leading-tight hidden lg:block">
+              <span className="text-red-500 font-bold block mb-1">WARNING:</span>
+              System logs actively updated. Black Thorne protocol requires strict compliance. Report anomalous data patterns to Supervisor.
+            </div>
+
+          </aside>
+
+          {/* Log Display Area */}
+          <main className="flex-1 bg-gray-900 bg-opacity-20 border border-gray-800 p-2 md:p-6 min-h-[500px]">
+            
+            <div className="flex justify-between text-xs font-bold text-gray-500 mb-4 border-b border-gray-800 pb-2 uppercase tracking-widest">
+              <span>Retrieval Results: {stats.visible} matches</span>
+              <span>Sort: Chronological</span>
+            </div>
+
+            <div className="space-y-2">
+              {filteredLogs.length > 0 ? (
+                filteredLogs.map(log => (
+                  <LogEntry key={log.id} log={log} />
+                ))
+              ) : (
+                <div className="py-12 text-center text-gray-500 border border-dashed border-gray-700">
+                  <span className="block text-2xl mb-2">∅</span>
+                  NO RECORDS FOUND MATCHING CURRENT PARAMETERS
+                </div>
+              )}
+            </div>
+
+          </main>
+
+        </div>
+        
+        <footer className="mt-8 text-center text-[10px] text-gray-600 tracking-widest uppercase border-t border-gray-800 pt-4">
+          END OF QUERY. SESSION ACTIVE. DIRECTORY: /MNT/BT_SECURE/
+        </footer>
+
+      </div>
+    </div>
+  );
+};
+
+export default DashboardPage;
