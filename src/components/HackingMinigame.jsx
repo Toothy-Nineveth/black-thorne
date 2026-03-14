@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 const GRID_SIZE = 9;
 const MINE_COUNT = 12;
 const MAX_MISTAKES = 3;
-const TIME_LIMIT = 45; // seconds
+const TIME_LIMIT = 105; // 1 minute 45 seconds
 
 const HackingMinigame = ({ onComplete, onCancel }) => {
   const [grid, setGrid] = useState([]);
@@ -120,7 +120,7 @@ const HackingMinigame = ({ onComplete, onCancel }) => {
           </div>
           <div className="text-right">
             <div className={`text-2xl font-bold ${timeLeft < 10 ? 'text-red-500 animate-pulse' : 'text-white'}`}>
-              00:{timeLeft.toString().padStart(2, '0')}
+              {Math.floor(timeLeft / 60).toString().padStart(2, '0')}:{(timeLeft % 60).toString().padStart(2, '0')}
             </div>
             <div className="text-[#8b0000] text-xs font-bold">
               Mistakes: {mistakes}/{MAX_MISTAKES}
