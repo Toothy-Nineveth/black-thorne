@@ -128,7 +128,10 @@ const HackingMinigame = ({ onComplete, onCancel }) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-9 gap-1 aspect-square mb-6 border border-gray-800 p-1 bg-gray-900">
+        <div 
+          className="gap-1 aspect-square mb-6 border border-gray-800 p-1 bg-gray-900" 
+          style={{ display: 'grid', gridTemplateColumns: 'repeat(9, minmax(0, 1fr))' }}
+        >
           {grid.map((cell, i) => {
             const isRevealed = revealed.has(i);
             const proximity = isRevealed && !cell.isMine ? calculateProximity(i) : null;
