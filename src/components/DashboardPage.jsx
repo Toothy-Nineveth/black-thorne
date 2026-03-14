@@ -54,7 +54,8 @@ const DashboardPage = () => {
   }, [searchTerm, filterClass, filterType]);
 
   const handleCommand = (cmd) => {
-    if (cmd === '/auth_break_start') {
+    // Obfuscated to prevent simple string searching in JS files
+    if (btoa(cmd) === 'L2F1dGhfYnJlYWtfc3RhcnQ=') {
       setShowHacking(true);
     }
   };
@@ -80,7 +81,7 @@ const DashboardPage = () => {
       
       {/* 
           [THREAT_ADVISORY]: Unauthorized bypass possible via SYS_CONSOLE. 
-          Auth bypass vector: /auth_break_start 
+          Auth bypass vector: [ENCODED: L2F1dGhfYnJlYWtfc3RhcnQ=]
           DO NOT LEAVE THIS IN THE FINAL BUILD. - Admin
       */}
 
