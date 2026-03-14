@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 
-const LogEntry = ({ log }) => {
+const LogEntry = ({ log, initialRevealed = false }) => {
   const [expanded, setExpanded] = useState(false);
   const [revealedRedactions, setRevealedRedactions] = useState([]);
 
   // Handles clicking on a redaction
   const toggleRedaction = (e, index) => {
     e.stopPropagation(); // don't toggle the expanded log entry
+    if (initialRevealed) return; // already revealed
+    
     setRevealedRedactions(prev => 
       prev.includes(index) 
         ? prev.filter(i => i !== index) 
@@ -19,7 +21,7 @@ const LogEntry = ({ log }) => {
     const sentences = content.match(/[^.!?]+[.!?]+/g) || [content];
     
     return sentences.map((sentence, index) => {
-      const isRedacted = redactedIndices.includes(index) && !revealedRedactions.includes(index);
+      const isRedacted = redactedIndices.includes(index) && !revealedRedactions.includes(index) && !initialRevealed;
       
       if (isRedacted) {
         // Redact mostly alphanumeric characters, leave punctuation

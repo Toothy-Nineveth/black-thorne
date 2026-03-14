@@ -2,6 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { LOGS } from '../data/logs';
 import { useAuth } from '../context/AuthContext';
 import LogEntry from './LogEntry';
+import TerminalConsole from './TerminalConsole';
+import HackingMinigame from './HackingMinigame';
 
 const DashboardPage = () => {
   const { logout } = useAuth();
@@ -9,16 +11,17 @@ const DashboardPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterClass, setFilterClass] = useState('ALL');
   const [filterType, setFilterType] = useState('ALL');
+  const [showHacking, setShowHacking] = useState(false);
+  const [sessionUnlocked, setSessionUnlocked] = useState(false);
   
-  // Progress simulation (just visual)
-  const operationProgress = 87;
+  // Progress simulation
+  const operationProgress = sessionUnlocked ? 100 : 87;
 
   // Filter and sort logic
   const filteredLogs = useMemo(() => {
     let result = [...LOGS];
 
     // Sub-sort chronological roughly based on DR date strings.
-    // E.g '-339 DR', '1360 DR'. Strip ' DR' and parse.
     result.sort((a, b) => {
       const dateA = parseInt(a.date.replace(' DR', ''), 10);
       const dateB = parseInt(b.date.replace(' DR', ''), 10);
@@ -44,37 +47,56 @@ const DashboardPage = () => {
       );
     }
 
+    // If unlocked, maybe show hidden records? 
+    // For now, let's just keep the existing ones but change the status.
+
     return result;
   }, [searchTerm, filterClass, filterType]);
+
+  const handleCommand = (cmd) => {
+    if (cmd === '/auth_break_start') {
+      setShowHacking(true);
+    }
+  };
+
+  const handleHackingSuccess = () => {
+    setShowHacking(false);
+    setSessionUnlocked(true);
+    // You could trigger a sound or a visual flash here
+  };
 
   // Aggregate stats
   const stats = {
     total: LOGS.length,
     visible: filteredLogs.length,
-    redactedBytes: LOGS.reduce((acc, log) => acc + (log.redactedSections?.length || 0), 0) * 128
+    redactedBytes: sessionUnlocked ? 0 : LOGS.reduce((acc, log) => acc + (log.redactedSections?.length || 0), 0) * 128
   };
 
-  const classifications = ['ALL', ...new Set(LOGS.map(l => l.classification))];
-  // Group similar ones for a cleaner dropdown
   const simplifiedFilters = ['ALL', 'DECLASSIFIED', 'ROUTINE', 'CONFIDENTIAL', 'RESTRICTED', 'TOP SECRET', 'EYES ONLY'];
 
   return (
     <div className="min-h-screen bg-black text-gray-300 p-2 md:p-6 font-mono selection:bg-red-900 selection:text-white">
       <div className="grain-overlay"></div>
       
+      {/* 
+          [THREAT_ADVISORY]: Unauthorized bypass possible via SYS_CONSOLE. 
+          Auth bypass vector: /auth_break_start 
+          DO NOT LEAVE THIS IN THE FINAL BUILD. - Admin
+      */}
+
       <div className="max-w-6xl mx-auto flex flex-col h-full crt-flicker">
         
         {/* Command Header */}
-        <header className="border-2 border-gray-700 bg-gray-900 bg-opacity-50 p-4 mb-6 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-red-900 rounded-full blur-[100px] opacity-20 pointer-events-none"></div>
+        <header className={`border-2 ${sessionUnlocked ? 'border-green-900 shadow-[0_0_20px_rgba(34,197,94,0.2)]' : 'border-gray-700'} bg-gray-900 bg-opacity-50 p-4 mb-6 relative overflow-hidden transition-all duration-1000`}>
+          <div className={`absolute top-0 right-0 w-32 h-32 ${sessionUnlocked ? 'bg-green-900' : 'bg-red-900'} rounded-full blur-[100px] opacity-20 pointer-events-none`}></div>
           
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-gray-700 pb-4 mb-4">
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-[#d4af37] tracking-widest courier-prime mb-1">
+              <h1 className={`text-2xl md:text-3xl font-bold ${sessionUnlocked ? 'text-green-500' : 'text-[#d4af37]'} tracking-widest courier-prime mb-1 transition-colors duration-1000`}>
                 BLACK THORNE INTELLIGENCE ARCHIVE
               </h1>
               <p className="text-xs text-gray-500 tracking-wider">
-                CURRENT SECURITY LEVEL: THETA-7 (TS/SCI) | OPERATOR: CALLIOPE
+                CURRENT SECURITY LEVEL: {sessionUnlocked ? 'OVERRIDE-G7 (ADM)' : 'THETA-7 (TS/SCI)'} | OPERATOR: CALLIOPE
               </p>
             </div>
             
@@ -89,12 +111,14 @@ const DashboardPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
             <div>
               <div className="flex justify-between text-xs mb-1 font-bold">
-                <span className="text-gray-400 tracking-widest">OPERATION STATUS: RESURRECTION PROTOCOL</span>
-                <span className="text-[#d4af37]">{operationProgress}%</span>
+                <span className="text-gray-400 tracking-widest uppercase">
+                  {sessionUnlocked ? 'DECRYPTION COMPLETE' : 'OPERATION STATUS: RESURRECTION PROTOCOL'}
+                </span>
+                <span className={sessionUnlocked ? 'text-green-500' : 'text-[#d4af37]'}>{operationProgress}%</span>
               </div>
               <div className="h-4 bg-gray-800 border border-gray-600 w-full overflow-hidden">
                 <div 
-                  className="h-full bg-gradient-to-r from-red-900 to-red-600 animate-pulse-glow" 
+                  className={`h-full ${sessionUnlocked ? 'bg-green-600' : 'bg-gradient-to-r from-red-900 to-red-600 animate-pulse-glow'} transition-all duration-1000`}
                   style={{ width: `${operationProgress}%` }}
                 ></div>
               </div>
@@ -107,7 +131,9 @@ const DashboardPage = () => {
               </div>
               <div>
                 <span className="block text-gray-400">ENCRYPTED/REDACTED</span>
-                <span>{stats.redactedBytes} BYTES</span>
+                <span className={sessionUnlocked ? 'text-green-500 line-through' : ''}>
+                  {stats.redactedBytes} BYTES
+                </span>
               </div>
             </div>
           </div>
@@ -116,10 +142,7 @@ const DashboardPage = () => {
         {/* Main Grid: Sidebar Controls + Log List */}
         <div className="flex flex-col lg:flex-row gap-6 flex-1">
           
-          {/* Controls Sidebar */}
           <aside className="w-full lg:w-64 flex-shrink-0 space-y-6 no-print">
-            
-            {/* Search */}
             <div className="border border-gray-700 p-4 bg-black">
               <label className="block text-xs font-bold text-gray-400 mb-2 tracking-widest text-[#d4af37]">QUERY INTERFACE</label>
               <input 
@@ -131,7 +154,6 @@ const DashboardPage = () => {
               />
             </div>
 
-            {/* Filters */}
             <div className="border border-gray-700 p-4 bg-black">
               <label className="block text-xs font-bold text-gray-400 mb-4 tracking-widest text-[#d4af37]">FILTER PARAMETERS</label>
               
@@ -168,15 +190,17 @@ const DashboardPage = () => {
             </div>
 
             <div className="text-[10px] text-gray-600 border border-gray-800 p-3 leading-tight hidden lg:block">
-              <span className="text-red-500 font-bold block mb-1">WARNING:</span>
-              System logs actively updated. Black Thorne protocol requires strict compliance. Report anomalous data patterns to Supervisor.
+              <span className="text-red-500 font-bold block mb-1 uppercase">
+                {sessionUnlocked ? 'Override Notice:' : 'WARNING:'}
+              </span>
+              {sessionUnlocked 
+                ? 'Archive decryption successful. All data redactions bypassed for current session.' 
+                : 'System logs actively updated. Black Thorne protocol requires strict compliance.'}
             </div>
 
           </aside>
 
-          {/* Log Display Area */}
           <main className="flex-1 bg-gray-900 bg-opacity-20 border border-gray-800 p-2 md:p-6 min-h-[500px]">
-            
             <div className="flex justify-between text-xs font-bold text-gray-500 mb-4 border-b border-gray-800 pb-2 uppercase tracking-widest">
               <span>Retrieval Results: {stats.visible} matches</span>
               <span>Sort: Chronological</span>
@@ -185,7 +209,7 @@ const DashboardPage = () => {
             <div className="space-y-2">
               {filteredLogs.length > 0 ? (
                 filteredLogs.map(log => (
-                  <LogEntry key={log.id} log={log} />
+                  <LogEntry key={log.id} log={log} initialRevealed={sessionUnlocked} />
                 ))
               ) : (
                 <div className="py-12 text-center text-gray-500 border border-dashed border-gray-700">
@@ -194,9 +218,7 @@ const DashboardPage = () => {
                 </div>
               )}
             </div>
-
           </main>
-
         </div>
         
         <footer className="mt-8 text-center text-[10px] text-gray-600 tracking-widest uppercase border-t border-gray-800 pt-4">
@@ -204,6 +226,15 @@ const DashboardPage = () => {
         </footer>
 
       </div>
+
+      <TerminalConsole onCommand={handleCommand} />
+      
+      {showHacking && (
+        <HackingMinigame 
+          onComplete={handleHackingSuccess} 
+          onCancel={() => setShowHacking(false)} 
+        />
+      )}
     </div>
   );
 };
