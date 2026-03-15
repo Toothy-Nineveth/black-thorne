@@ -291,7 +291,7 @@ Site sealed. Monitoring reduced to passive ██████ surveillance unles
     keyLog: true,
     isHidden: true,
     hiddenCategory: 'LOVE',
-    content: `[REDACTED]: I did not choose to be [REDACTED]. I wanted to express my feelings to you. If only we shared a common tongue. Vengeance was what drove me to them... The only language left to me, revenge. But the words we shared... No, that was no language at all. That is why... I chose the language of gratitude instead, and go back to silence. I am [REDACTED]... I am... the absence of words.`,
+    content: `██████: I did not choose to be ██████. I wanted to express my feelings to you. If only we shared a common tongue. Vengeance was what drove me to them... The only language left to me, revenge. But the words we shared... No, that was no language at all. That is why... I chose the language of gratitude instead, and go back to silence. I am ██████... I am... the absence of words.`,
     redactedSections: [],
   },
   {
@@ -304,21 +304,21 @@ Site sealed. Monitoring reduced to passive ██████ surveillance unles
     keyLog: true,
     isHidden: true,
     hiddenCategory: '27',
-    content: `[REDACTED]: Well, [REDACTED]... I have the report on the incident at the Sanatorium. Assuming the throat-blight evolved—I’m sorry, "underwent a mutation"—the only plausible explanations are exposure to a high concentration of raw Abyssal energy or concentrated radiance. As you know, some of the acolytes were infected with the blight. The anti-magic salts prevented the curse from spreading, but the necrotic spores themselves cannot be purged from a host’s throat once they take root. Once you’re marked by the [REDACTED]’s "parting gift," you’re stuck with it.
+    content: `██████: Well, ██████... I have the report on the incident at the Sanatorium. Assuming the throat-blight evolved—I’m sorry, "underwent a mutation"—the only plausible explanations are exposure to a high concentration of raw Abyssal energy or concentrated radiance. As you know, some of the acolytes were infected with the blight. The anti-magic salts prevented the curse from spreading, but the necrotic spores themselves cannot be purged from a host’s throat once they take root. Once you’re marked by the ██████’s "parting gift," you’re stuck with it.
 
-The mages regularly used true seeing crystals to monitor the spores. No problem there; they kept a close eye on the arcane resonance. But those crystals didn't just emit divination magic; they were also leaking concentrated radiant energy from the Positive Energy Plane, even though that’s unnecessary for a simple scan. See, raw radiance has far more volatile effects on a curse’s essence than simple divination, meaning the only logical conclusion is that someone etched a specific rune into the crystal to trigger a mutation. That energy leaked out from the focus. Because the rune was added later, the containment wards were inadequate, and the person who commissioned and inspected those crystals... was you, [REDACTED]. That makes you the only person with the opportunity to sabotage those tools.
+The mages regularly used true seeing crystals to monitor the spores. No problem there; they kept a close eye on the arcane resonance. But those crystals didn't just emit divination magic; they were also leaking concentrated radiant energy from the Positive Energy Plane, even though that’s unnecessary for a simple scan. See, raw radiance has far more volatile effects on a curse’s essence than simple divination, meaning the only logical conclusion is that someone etched a specific rune into the crystal to trigger a mutation. That energy leaked out from the focus. Because the rune was added later, the containment wards were inadequate, and the person who commissioned and inspected those crystals... was you, ██████. That makes you the only person with the opportunity to sabotage those tools.
 
-[REDACTED]: So now you're saying I sabotaged holy relics for some wild plan to make the throat-blight kill everyone?!
+██████: So now you're saying I sabotaged holy relics for some wild plan to make the throat-blight kill everyone?!
 
-[REDACTED]: Or maybe you thought it'd reveal a way to cure the blight without using the salts... with that much to barter, I suppose the Zhentarim or the Red Wizards would welcome even a pathetic cur like you.
+██████: Or maybe you thought it'd reveal a way to cure the blight without using the salts... with that much to barter, I suppose the Zhentarim or the Red Wizards would welcome even a pathetic cur like you.
 
-[REDACTED]: Just stop it!
+██████: Just stop it!
 
-[REDACTED]: You'd have no shortage of buyers, but most would be happy with just the blight. You wouldn't need to offer anything else... however, if that buyer already knew about the curse, they'd also know that by itself, it's no longer the ultimate bargaining chip it once was. To sell to that buyer, you'd need to throw in a bonus; a way to one-up it. There's only one cabal who'd be after that.
+██████: You'd have no shortage of buyers, but most would be happy with just the blight. You wouldn't need to offer anything else... however, if that buyer already knew about the curse, they'd also know that by itself, it's no longer the ultimate bargaining chip it once was. To sell to that buyer, you'd need to throw in a bonus; a way to one-up it. There's only one cabal who'd be after that.
 
-[REDACTED]: [stammers nervously]
+██████: [stammers nervously]
 
-[REDACTED]: [REDACTED], we monitor all sending spells and scrying within this keep. That includes messages sent via illicit arcane focuses. You've been in frequent contact with people in Waterdeep: a private alchemical guild, whose primary benefactor is the Lords' Alliance, and they are connected to The Watchers. You made a deal with them. You offered them a refined blight in exchange for your safety. This is the only place in Toril where this curse still exists. And you used it as a testing ground, trying to resurrect their bio-warfare! But your plan to harvest the blight has failed. Your lies end now! ...And don't think you're leaving this tower alive.`,
+██████: ██████, we monitor all sending spells and scrying within this keep. That includes messages sent via illicit arcane focuses. You've been in frequent contact with people in Waterdeep: a private alchemical guild, whose primary benefactor is the Lords' Alliance, and they are connected to The Watchers. You made a deal with them. You offered them a refined blight in exchange for your safety. This is the only place in Toril where this curse still exists. And you used it as a testing ground, trying to resurrect their bio-warfare! But your plan to harvest the blight has failed. Your lies end now! ...And don't think you're leaving this tower alive.`,
     redactedSections: [],
   },
   {
@@ -331,23 +331,23 @@ The mages regularly used true seeing crystals to monitor the spores. No problem 
     keyLog: true,
     isHidden: true,
     hiddenCategory: 'DEVIL',
-    content: `[REDACTED]: Commander, about those poor souls you saw in that "Demon’s Fane"...
+    content: `██████: Commander, about those poor souls you saw in that "Demon’s Fane"...
 
-[REDACTED]: Gods help them. All shackled to the stone slabs, with those pulsing growths on their chests.
+██████: Gods help them. All shackled to the stone slabs, with those pulsing growths on their chests.
 
-[REDACTED]: The temple healers tell me they were likely a form of magical cyst or tumor.
+██████: The temple healers tell me they were likely a form of magical cyst or tumor.
 
-[REDACTED]: Can a simple growth truly become that massive?
+██████: Can a simple growth truly become that massive?
 
-[REDACTED]: Under the influence of a Wild Magic surge, perhaps, but... supposing they are a type of abscess forming on the surface of the skin, the scale is simply impossible, and the texture is all wrong. In the end, the Circle of Alchemists was at a loss. Those growths were like nothing they’d ever seen in any bestiary. The ichor you said you got on your gauntlet when you touched one was scorched away in the fray... and the laboratory burned to the ground, too. None of the divination rites we performed once you were back at the keep revealed a curse or plague that could have birthed them. Meaning we don't have a single drop of essence to study.
+██████: Under the influence of a Wild Magic surge, perhaps, but... supposing they are a type of abscess forming on the surface of the skin, the scale is simply impossible, and the texture is all wrong. In the end, the Circle of Alchemists was at a loss. Those growths were like nothing they’d ever seen in any bestiary. The ichor you said you got on your gauntlet when you touched one was scorched away in the fray... and the laboratory burned to the ground, too. None of the divination rites we performed once you were back at the keep revealed a curse or plague that could have birthed them. Meaning we don't have a single drop of essence to study.
 
-[REDACTED]: Everything was lost to the fire...
+██████: Everything was lost to the fire...
 
-[REDACTED]: What worries the High Priest most is whether it’s a spreading blight. Whether there’s a chance we could all end up like those husks.
+██████: What worries the High Priest most is whether it’s a spreading blight. Whether there’s a chance we could all end up like those husks.
 
-[REDACTED]: And?
+██████: And?
 
-[REDACTED]: The keep’s warding and purification rites have always been strict. After all, a marching army is the perfect vessel for a pestilence. For the time being, at least, the protective circles hold; there’s no sign of the blight spreading, nor any symptoms of the corruption.`,
+██████: The keep’s warding and purification rites have always been strict. After all, a marching army is the perfect vessel for a pestilence. For the time being, at least, the protective circles hold; there’s no sign of the blight spreading, nor any symptoms of the corruption.`,
     redactedSections: [],
   },
   {
@@ -360,7 +360,7 @@ The mages regularly used true seeing crystals to monitor the spores. No problem 
     keyLog: true,
     isHidden: true,
     hiddenCategory: 'MSR',
-    content: `[REDACTED]: The origins of the Mass Shadow Ritual date back nearly an eon, to the Age of Blue Fire. At that time, these energies were not a curse, but primordial echoes of the Void itself. They are believed to be the common ancestor to the necrotic blights of the Shadowfell and the life-draining mists of the Ethereal Plane.
+    content: `██████: The origins of the Mass Shadow Ritual date back nearly an eon, to the Age of Blue Fire. At that time, these energies were not a curse, but primordial echoes of the Void itself. They are believed to be the common ancestor to the necrotic blights of the Shadowfell and the life-draining mists of the Ethereal Plane.
 
 However, the cosmology of Toril underwent a violent change during the Era of Upheaval. The cause is debated by scholars, but the evidence suggests that over ninety percent of the ethereal spirits at that time were extinguished. The most pronounced threat to these proto-shadows was the thinning of the Weave. The result was a splintering—a metamorphosis that gave birth to a new strain of magic that could parasitize the soul-essence of living beings. This survival technique helped the shadows anchor themselves to reality, and inhabiting the spirit kept them securely connected to the Material Plane.
 
@@ -376,7 +376,7 @@ The current Era began with a rise in the Weave’s stability, which helped the y
 
 What happens next is as I have already described. People took the vocalizing prowess given them by the shadows and turned it into common language; once the shadows could no longer use it as their mating call, they faded into myth. Or in other words, the shadows overcame every hurdle except the rise of civilized speech.
 
-[REDACTED] shared an opinion on that matter. They said Liara Moor’s project was sure to succeed. After all, the shadows had a grudge against us mortals. Even the Archdevils of the Nine Hells look upon her work with disgust; they claim the ritual is a perversion beyond even their laws. They say one should "seek the Seeker for the 13th" to ask them directly why their Patron—the Archivist—gave such a foul gift to Moor.
+██████ shared an opinion on that matter. They said Liara Moor’s project was sure to succeed. After all, the shadows had a grudge against us mortals. Even the Archdevils of the Nine Hells look upon her work with disgust; they claim the ritual is a perversion beyond even their laws. They say one should "seek the Seeker for the 13th" to ask them directly why their Patron—the Archivist—gave such a foul gift to Moor.
 
 To think we awoke these shadows after such a long slumber, just so they could sate their thirst for vengeance... It is terrible... unforgivable. And yet, it is what I have done.`,
     redactedSections: [],
