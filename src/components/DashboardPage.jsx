@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { LOGS } from '../data/logs';
+import { LOGS, SECRET_LOG_CALLIOPE } from '../data/logs';
 import { useAuth } from '../context/AuthContext';
 import LogEntry from './LogEntry';
 import TerminalConsole from './TerminalConsole';
@@ -14,7 +14,9 @@ const DashboardPage = () => {
   const [showHacking, setShowHacking] = useState(false);
   const [sessionUnlocked, setSessionUnlocked] = useState(false);
   const [unlockedCategories, setUnlockedCategories] = useState([]);
-  
+  const [pendingCommand, setPendingCommand] = useState(null);
+  const [isPasswordMode, setIsPasswordMode] = useState(false);
+
   // Progress simulation
   const operationProgress = sessionUnlocked ? 100 : 87;
 
@@ -51,16 +53,36 @@ const DashboardPage = () => {
     // Only show things if they aren't marked as hidden initially, or if their category is unlocked
     result = result.filter(log => !log.isHidden || unlockedCategories.includes(log.hiddenCategory));
 
+    if (unlockedCategories.includes('CALLIOPE')) {
+      result.push(SECRET_LOG_CALLIOPE);
+    }
+
     return result;
   }, [searchTerm, filterClass, filterType, unlockedCategories]);
 
   const handleCommand = (cmd) => {
+    if (isPasswordMode) {
+      if (cmd.toLowerCase() === 'ophelia') {
+        if (!unlockedCategories.includes('CALLIOPE')) {
+          setUnlockedCategories(prev => [...prev, 'CALLIOPE']);
+        }
+        setSearchTerm('Soul Core');
+        setIsPasswordMode(false);
+      } else {
+        // Simple error feedback could go here, for now just exit password mode or keep trying
+        setIsPasswordMode(false);
+      }
+      return;
+    }
+
     // Obfuscated to prevent simple string searching in JS files
     if (btoa(cmd) === 'L2F1dGhfYnJlYWtfc3RhcnQ=') {
       setShowHacking(true);
     } else if (cmd === '/auth_log_past_9_AAVL') {
       if (!unlockedCategories.includes('NIGHTBRINGER')) setUnlockedCategories(prev => [...prev, 'NIGHTBRINGER']);
       setSearchTerm('NIGHTBRINGER'); // auto-filter for convenience
+    } else if (cmd === '/auth_perst_calliope') {
+      setIsPasswordMode(true);
     } else if (cmd === '/auth_log_past_love') {
       if (!unlockedCategories.includes('LOVE')) setUnlockedCategories(prev => [...prev, 'LOVE']);
       setSearchTerm('Unsent Transmission');
@@ -245,7 +267,7 @@ const DashboardPage = () => {
 
       </div>
 
-      <TerminalConsole onCommand={handleCommand} />
+      <TerminalConsole onCommand={handleCommand} isPasswordMode={isPasswordMode} />
       
       {showHacking && (
         <HackingMinigame 

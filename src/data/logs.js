@@ -61,7 +61,10 @@ Calliope Zerynthar: Unfortunately terminated during containment operations.
 Post-action analysis: Successful containment, but high cost.
 New protocol: Project archived, components scattered across planes.
 Recommendation: Find successor to Calliope for future iterations.
-See REITHWIN_COVER_STORY_001 for approved media narrative.`,
+See REITHWIN_COVER_STORY_001 for approved media narrative.
+
+IL: remove this
+OH: I still have hope. /auth_perst █████████`,
     redactedSections: [3], // Civilian casualties part of Sentence 4
   },
   {
@@ -382,3 +385,29 @@ To think we awoke these shadows after such a long slumber, just so they could sa
     redactedSections: [],
   },
 ];
+
+// --- PERSONAL CORRESPONDENCE (PASSWORD LOCKED) ---
+export const SECRET_LOG_CALLIOPE = {
+  id: 'LOG-HIST-CALLIOPE',
+  date: 'UNKNOWN',
+  title: 'Direct Transmission: Project Soul Core - OH to Calliope',
+  classification: 'EYES ONLY / PERSONAL',
+  declassifiedDate: null,
+  operationCode: 'SOUL-CORE-PIONEER',
+  keyLog: true,
+  isHidden: true,
+  hiddenCategory: 'CALLIOPE',
+  content: `Calliope,
+
+Your contributions to the soul core project are ████████. With the data you provided, you should be considered a pioneer of hell. It is for this reason that I am truly saddened that I had to "dispose of you".
+
+But the mere fact you logged in here means you're still alive, yes? No one else, I believe, could have regained full theta-7 access to the console. Though there is also reason for me to believe this might be the Seeker after all, and that "Nightsong" might still be alive.
+
+I understand that whoever might be reading this now might be Belladonna, BELLA or Joy, it does not matter. But I see you've taken interest in project nightbringer from your log history. Is it really you?
+
+Find me, for old time's sake.
+
+— OH`,
+  redactedSections: [],
+};
+

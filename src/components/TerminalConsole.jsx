@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const TerminalConsole = ({ onCommand }) => {
+const TerminalConsole = ({ onCommand, isPasswordMode = false }) => {
   const [input, setInput] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef(null);
@@ -45,11 +45,13 @@ const TerminalConsole = ({ onCommand }) => {
   return (
     <div className="fixed bottom-0 left-0 w-full bg-black border-t-2 border-[#d4af37] p-2 z-50 font-mono shadow-[0_-5px_15px_rgba(212,175,55,0.2)] no-print">
       <div className="max-w-6xl mx-auto flex items-center gap-2">
-        <span className="text-[#d4af37] font-bold text-sm select-none">BT_PROMPT: </span>
+        <span className="text-[#d4af37] font-bold text-sm select-none">
+          {isPasswordMode ? 'ENTER ACCESS KEY: ' : 'BT_PROMPT: '}
+        </span>
         <form onSubmit={handleSubmit} className="flex-1">
           <input 
             ref={inputRef}
-            type="text" 
+            type={isPasswordMode ? 'password' : 'text'} 
             value={input}
             onChange={(e) => setInput(e.target.value)}
             className="w-full bg-transparent border-none text-white focus:outline-none p-0 text-sm"
