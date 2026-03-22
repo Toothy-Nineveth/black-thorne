@@ -269,7 +269,7 @@ const OverrideConsole = ({ facilityState, setFacilityState, sessionStart, preloa
                 setMinigame(null);
               }}
               onFail={() => {
-                push([{ cls: 'error-line', text: '>> SEQUENCE MISMATCH. LOCKOUT INITIATED — 30 SECONDS.' }]);
+                push([{ cls: 'error-line', text: '>> SEQUENCE MISMATCH. LOCKOUT INITIATED — 5 SECONDS.' }]);
                 log('/auth_unlock_key — FAILED');
               }}
             />

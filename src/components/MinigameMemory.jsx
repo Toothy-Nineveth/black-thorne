@@ -60,7 +60,7 @@ const MinigameMemory = ({ onSuccess, onFail }) => {
       // wrong
       setPlayerInput([]);
       setPhase('locked');
-      setLockout(30);
+      setLockout(5);
       onFail && onFail();
       return;
     }
