@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import OverrideConsole from './OverrideConsole';
+import { sha256 } from '../utils/hash';
 import '../styles/override.css';
 
 const ASCII_EYE = `\u2800\u2800\u2800\u2800\u2800\u2800\u28c0\u2800\u2800\u2800\u2800\u2800\u2800\u28e0\u28c6\u2800\u2800\u2800\u2800\u2800\u2800\u2801\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800
@@ -54,7 +55,10 @@ const OsyluthOverridePage = () => {
   const [bootDone, setBootDone] = useState(false);
   const [showFlash, setShowFlash] = useState(true);
   const [bootLines, setBootLines] = useState([]);
+  const [pinPhase, setPinPhase] = useState(false);   // true = show PIN screen
   const [showPanel, setShowPanel] = useState(false);
+  const [pinInput, setPinInput] = useState('');
+  const [pinError, setPinError] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [facilityState, setFacilityState] = useState({});
   const [notes, setNotes] = useState({});
@@ -124,6 +128,22 @@ const OsyluthOverridePage = () => {
 
   const roomStatus = (idx) => facilityState[idx]?.status || 'CLEAR';
 
+  // SHA-256("24456") — PIN for master override gate
+  const PIN_HASH = '786b91e6228e112e25b2ec9ef1fa68ddd7f2ea0aa993e45509fb7f1016c6a193';
+
+  const handlePinSubmit = async (e) => {
+    e.preventDefault();
+    const hash = await sha256(pinInput.trim());
+    if (hash === PIN_HASH) {
+      setPinError(false);
+      setPinPhase(false);
+      setShowPanel(true);
+    } else {
+      setPinError(true);
+      setPinInput('');
+    }
+  };
+
   if (!bootDone) {
     return (
       <div className="override-root" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
@@ -142,6 +162,60 @@ const OsyluthOverridePage = () => {
     );
   }
 
+  // PIN gate screen
+  if (pinPhase) {
+    return (
+      <div className="override-root" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+        <div style={{ width: '100%', maxWidth: '480px', padding: '2rem', textAlign: 'center' }}>
+          <div style={{ border: '1px solid #CC0000', padding: '0.4rem 1rem', color: '#FF2222', fontSize: '0.7rem', letterSpacing: '0.15em', marginBottom: '2rem', boxShadow: '0 0 16px rgba(204,0,0,0.5)', animation: 'eye-pulse 1.5s ease-in-out infinite' }}>
+            ⚠ SUSPICIOUS ACTIVITY DETECTED — SECONDARY VERIFICATION REQUIRED ⚠
+          </div>
+          <div style={{ color: '#8B0000', fontSize: '0.75rem', letterSpacing: '0.12em', marginBottom: '1.5rem' }}>
+            ENTER OPERATOR PIN TO CONTINUE
+          </div>
+          <form onSubmit={handlePinSubmit}>
+            <input
+              type="password"
+              inputMode="numeric"
+              maxLength={10}
+              value={pinInput}
+              onChange={e => { setPinInput(e.target.value); setPinError(false); }}
+              autoFocus
+              style={{
+                background: '#0f0000',
+                border: `1px solid ${pinError ? '#FF2222' : '#660000'}`,
+                color: '#FF6666',
+                fontFamily: 'Share Tech Mono, monospace',
+                fontSize: '1.4rem',
+                letterSpacing: '0.4em',
+                textAlign: 'center',
+                padding: '0.6rem 1rem',
+                width: '180px',
+                outline: 'none',
+                display: 'block',
+                margin: '0 auto 0.75rem',
+              }}
+            />
+            {pinError && (
+              <div style={{ color: '#FF2222', fontSize: '0.7rem', marginBottom: '0.75rem', letterSpacing: '0.1em' }}>
+                {'>> INCORRECT PIN. ACCESS DENIED.'}
+              </div>
+            )}
+            <button type="submit" className="override-btn" style={{ maxWidth: '220px', margin: '0 auto' }}>
+              VERIFY
+            </button>
+          </form>
+          <div
+            onClick={() => setPinPhase(false)}
+            style={{ marginTop: '1.5rem', fontSize: '0.6rem', color: '#440000', cursor: 'pointer', letterSpacing: '0.1em' }}
+          >
+            [ ABORT — RETURN TO NODE ]
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (!showPanel) {
     return (
       <div className="override-root" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
@@ -150,7 +224,7 @@ const OsyluthOverridePage = () => {
           <div style={{ color: '#8B0000', fontSize: '0.75rem', letterSpacing: '0.15em', marginBottom: '2rem' }}>
             [ MASTER NODE ACTIVE — OSYLUTH ]
           </div>
-          <button className="override-btn" onClick={() => setShowPanel(true)}>
+          <button className="override-btn" onClick={() => setPinPhase(true)}>
             [ MASTER OVERRIDE — SITE AAVL ]
           </button>
           <div style={{ marginTop: '0.75rem', fontSize: '0.65rem', color: '#440000' }}>
